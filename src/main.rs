@@ -1,20 +1,21 @@
-use actix_web::{web, App, HttpServer, Responder, HttpResponse};
+#[macro_use]
+extern crate serde_derive;
 
-fn index(info: web::Path<(u32, String)>) -> impl Responder {
+use actix_web::{web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder, Result};
+use serde::Deserialize;
 
-    format!("Hello {}! id:{}", info.1, info.0)
+#[derive(Deserialize)]
+struct Info {
+    name: String,
+}
+
+/// deserialize `Info` from request's body
+fn index(info: web::Json<Info>) -> String {
+    format!("Welcome {}!", info.name)
 }
 
 fn main() -> std::io::Result<()> {
-    let app = App::new().service(
-            web::resource("/{id}")
-            .route(web::post().to(move || HttpResponse::Ok()))
-        );
-
-    HttpServer::new(
-        move ||  app
-    )
+    HttpServer::new(move || App::new().service(web::resource("/{id}").route(web::post().to(index))))
         .bind("127.0.0.1:8080")?
         .run()
-
 }
