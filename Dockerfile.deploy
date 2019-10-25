@@ -1,0 +1,7 @@
+FROM alpine AS deploy
+
+EXPOSE 8080
+
+COPY build/cache/target/debug/mob /mob
+
+ENTRYPOINT ["/mob"]
