@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.3"
 services:
   build:
     build:
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile.deploy
     ports:
-      - 8080:8080
+      - 8080
     image: gcr.io/mob-training/mob/master:latest
 
 volumes:

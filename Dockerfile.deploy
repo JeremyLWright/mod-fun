@@ -1,4 +1,4 @@
-FROM alpine AS deploy
+FROM ubuntu AS deploy
 
 EXPOSE 8080
 
