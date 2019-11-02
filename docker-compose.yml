@@ -1,23 +1,36 @@
 version: "3.3"
 services:
-  build:
-    build:
-      context: .
-      dockerfile: Dockerfile.build
-    volumes:
-      - .:/project:delegated
-    working_dir: /project
-    environment:
-      - CARGO_HOME=/project/build/cache/.cargo
-      - CARGO_TARGET_DIR=/project/build/cache/target
-
+  #build:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile.build
+  #  volumes:
+  #    - .:/project:delegated
+  #  working_dir: /project
+  #  environment:
+  #    - CARGO_HOME=/project/build/cache/.cargo
+  #    - CARGO_TARGET_DIR=/project/build/cache/target
   deploy:
     build:
       context: .
       dockerfile: Dockerfile.deploy
     ports:
-      - 8080
+        - 8080:8080
     image: gcr.io/mob-training/mob/master:latest
+    depends-on:
+        - db
+
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_DB=jokes
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=password
+
 
 volumes:
   cargo_home:

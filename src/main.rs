@@ -11,11 +11,11 @@ struct Info {
 
 /// deserialize `Info` from request's body
 fn index(info: web::Json<Info>) -> String {
-    format!("Welcome {}!", info.name)
+    format!("Welcome New Code{}!", info.name)
 }
 
 fn main() -> std::io::Result<()> {
     HttpServer::new(move || App::new().service(web::resource("/{id}").route(web::post().to(index))))
-        .bind("127.0.0.1:8080")?
+        .bind("0.0.0.0:8080")?
         .run()
 }

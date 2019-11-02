@@ -2,6 +2,6 @@ FROM ubuntu AS deploy
 
 EXPOSE 8080
 
-COPY build/cache/target/debug/mob /mob
+COPY target/debug/mob /mob
 
 ENTRYPOINT ["/mob"]
